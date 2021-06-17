@@ -1,11 +1,18 @@
 import { memo } from 'react';
 
 function Pager(props) {
-    return (
-        <div>
-            {props.page}
-        </div>
-    );
-}
+  const { page, onPageChange, totalPage } = props;
 
-export default memo(Pager)
+  const pages = [];
+  for (let i = 1; i <= totalPage; i++) {
+    pages.push(<button key={i} className={page === i ? 'active' : ''} onClick={() => onPageChange(i)}>{i}</button>);
+  }
+
+  return (
+    <div>
+      {pages}
+    </div>
+  );
+}
+  
+export default memo(Pager);
