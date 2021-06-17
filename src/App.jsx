@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, useMemo, memo } from 'react';
+import styled from 'styled-components';
 import Pager from './components/Pager';
 
 const pageCount = 10;
@@ -11,6 +12,30 @@ const posts = [];
 for (let i = 0; i < postCount; i++) {
   posts.push({ id: i, title: '안녕하세요', content: '소통해요~~' });
 }
+
+const FlexCenter = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
+const PostList = styled.ul({ minHeight: '540px' });
+const PostListItem = styled.li({
+  listStyle: 'none',
+  padding: '12px',
+  margin: '8px 0',
+  border: '1px solid #e9e9e9',
+  borderRadius: '8px',
+  fontSize: '14px',
+
+  '> div': { display: 'flex' },
+  '.post-list-item-id': { width: '80px' },
+  '.post-list-item-title': { width: '200px' },
+  '.post-list-item-content': { flex: 1 },
+
+  ':hover': {
+    background: '#e9e9e9',
+  },
+});
 
 function App() {
   const [page, setPage] = useState(1);
@@ -29,21 +54,23 @@ function App() {
 
   const Posts = useMemo(() => currentPosts.map((post) => (
     <>
-      <li style={{ listStyle: 'none' }}>
-        <div style={{ display: 'flex' }}>
-          <div style={{ width: '80px' }}>id: {post.id}</div>
-          <div style={{ width: '200px' }}>title: {post.title}</div>
-          <div style={{ flex: 1 }}>content: {post.content}</div>
+      <PostListItem>
+        <div>
+          <div className='post-list-item-id'>id: {post.id}</div>
+          <div className='post-list-item-title'>title: {post.title}</div>
+          <div className='post-list-item-content'>content: {post.content}</div>
         </div>
-      </li>
+      </PostListItem>
     </>
   )), [currentPosts]);
 
   return (
     <div>
-      게시판
-      {Posts}
-      <Pager page={page} onPageChange={handlePageChange} totalPage={totalPage}></Pager>
+      <h2>게시판</h2>
+      <PostList>{Posts}</PostList>
+      <FlexCenter>
+        <Pager page={page} onPageChange={handlePageChange} totalPage={totalPage}></Pager>
+      </FlexCenter>
     </div>
   );
 }
